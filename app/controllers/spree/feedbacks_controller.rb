@@ -45,7 +45,7 @@ class Spree::FeedbacksController < Spree::StoreController
   def feedback_params
     params.require(:feedback).permit(
       :vote, :step, :completed, :other_vibe, :other_effect, :other_taste,
-      effect_ids: [], taste_ids: [], vibe_ids: []
+      :comment, effect_ids: [], taste_ids: [], vibe_ids: []
     )
   end
 end
