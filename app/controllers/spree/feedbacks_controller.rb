@@ -13,7 +13,7 @@ class Spree::FeedbacksController < Spree::StoreController
     else
       order = spree_current_user.orders.joins(:line_items).find_by('spree_line_items.id = ?', params[:item])
       @variant = order.line_items.find(params[:item]).variant
-      @product = @variant.product
+      @product = Feedbacks::Product.new(@variant).do
       @feedback = spree_current_user.feedbacks.new
     end
   end
@@ -29,13 +29,13 @@ class Spree::FeedbacksController < Spree::StoreController
   def edit
     @feedback = spree_current_user.feedbacks.find(params[:id])
     @variant = @feedback.line_item.variant
-    @product = @variant.product
+    @product = Feedbacks::Product.new(@variant).do
   end
 
   def update
     @feedback = spree_current_user.feedbacks.find(params[:id])
     @variant = @feedback.line_item.variant
-    @product = @variant.product
+    @product = Feedbacks::Product.new(@variant).do
     @feedback.update_attributes(feedback_params)
     redirect_to edit_feedback_path(@feedback)
   end
