@@ -13,8 +13,8 @@ module Feedbacks
     private
 
     def view_searcher_products
-      @_view_searcher_products ||= ViewSearcher.in_stock
-        .by_store(variant.spree_store_id).where(product_id: variant.product_id).sort_by_name
+      @_view_searcher_products ||= ViewSearcher.by_store(variant.spree_store_id)
+        .where(product_id: variant.product_id).sort_by_name
     end
 
     def products_strains

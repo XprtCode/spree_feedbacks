@@ -50,8 +50,8 @@ module Feedbacks
     end
 
     def view_searcher_products
-      @_view_searcher_products ||= ViewSearcher.in_stock
-        .by_store(store.id).where(product_id: product_ids).sort_by_name
+      @_view_searcher_products ||= ViewSearcher.by_store(store.id)
+        .where(product_id: product_ids).sort_by_name
     end
 
     def products_strains
