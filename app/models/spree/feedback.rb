@@ -1,7 +1,13 @@
 class Spree::Feedback < ActiveRecord::Base
+  scope :pending, ->(){ where(completed: true, approved: false, rejected: false) }
+  scope :approved, ->(){ where(approved: true) }
+  scope :rejected, ->(){ where(rejected: true) }
+
   belongs_to :line_item, class_name: 'Spree::LineItem', foreign_key: :spree_line_item_id
-  belongs_to :spree_user
-  delegate :variant, to: :spree_line_item, allow_nil: true
+  delegate :variant, to: :line_item, allow_nil: true
+
+  belongs_to :user, class_name: 'Spree::User', foreign_key: :spree_user_id
+
 
   has_many :feedback_effects, class_name: 'Spree::FeedbackEffect', foreign_key: :spree_feedback_id, dependent: :destroy
   has_many :effects, through: :feedback_effects, foreign_key: :spree_effect_id
@@ -19,5 +25,13 @@ class Spree::Feedback < ActiveRecord::Base
     return 5 if self.step == 4
 
     self.step += 1
+  end
+
+  def approve!
+    update_attributes(approved: true, rejected: false)
+  end
+
+  def reject!
+    update_attributes(approved: false, rejected: true)
   end
 end
